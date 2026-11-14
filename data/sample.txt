@@ -1,0 +1,21 @@
+TRAO ĐỔI KHOÁ DIFFIE–HELLMAN — TỆP VĂN BẢN MẪU ĐỂ DEMO MÃ HOÁ
+
+Năm 1976, Whitfield Diffie và Martin Hellman công bố bài báo "New Directions in
+Cryptography", đưa ra phương pháp để hai bên chưa từng gặp nhau cùng thiết lập
+một khoá bí mật chung chỉ bằng cách trao đổi thông tin qua kênh công khai.
+
+Tham số công khai: số nguyên tố lớn q và căn nguyên thuỷ α.
+  - Alice chọn bí mật x_A, gửi y_A = α^x_A mod q.
+  - Bob chọn bí mật x_B, gửi y_B = α^x_B mod q.
+  - Hai bên cùng tính được K_AB = α^(x_A·x_B) mod q.
+
+Kẻ nghe lén biết q, α, y_A, y_B nhưng muốn có K_AB thì phải giải bài toán
+logarit rời rạc — bài toán được coi là khó khi q đủ lớn (từ 2048 bít).
+
+Tuy nhiên Diffie–Hellman gốc KHÔNG xác thực hai bên, nên có thể bị tấn công
+người đứng giữa (man-in-the-middle). Cách phòng chống: ký số lên khoá công khai,
+dùng chứng chỉ (như TLS), hoặc so sánh mã xác nhận qua một kênh khác.
+
+Nội dung tệp này được mã hoá bằng ChaCha20 với khoá dẫn xuất (HKDF-SHA256) từ
+khoá chung K_AB, kèm HMAC-SHA256 để kiểm tra toàn vẹn. Sau khi Bob giải mã,
+chương trình so sánh giá trị băm SHA-256 của tệp gốc và tệp giải mã.
